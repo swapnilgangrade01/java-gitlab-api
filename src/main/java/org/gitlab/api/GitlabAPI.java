@@ -1260,7 +1260,38 @@ public class GitlabAPI {
 
         return retrieve().getAll(tailUrl, GitlabNote[].class);
     }
+    
+    /**
+     * Get all merge request versions.
+     *
+     * @param mergeRequest         The merge request
+     * @return the List of Gitlab merge request versions
+     * @throws IOException on gitlab api call error
+     */
+    public List<GitlabMergeRequestVersions> getAllMergeRequestVersions(GitlabMergeRequest mergeRequest) throws IOException {
+        String tailUrl = GitlabProject.URL + "/" + mergeRequest.getProjectId() +
+                GitlabMergeRequest.URL + "/" + mergeRequest.getIid() +
+                GitlabMergeRequestVersions.URL;
 
+        return retrieve().getAll(tailUrl, GitlabMergeRequestVersions[].class);
+    }
+
+    /**
+     * Get a version details from a Merge Request.
+     *
+     * @param mergeRequest         The merge request
+     * @param versionId               The id of the version
+     * @return the Gitlab merge request versions
+     * @throws IOException on gitlab api call error
+     */
+    public GitlabMergeRequestVersions getMergeRequestDiffVersion(GitlabMergeRequest mergeRequest, Integer versionId) throws IOException {
+        String tailUrl = GitlabProject.URL + "/" + mergeRequest.getProjectId() +
+                GitlabMergeRequest.URL + "/" + mergeRequest.getIid() +
+                GitlabMergeRequestVersions.URL + "/" + versionId;
+
+        return retrieve().to(tailUrl, GitlabMergeRequestVersions.class);
+    }
+    
     // Get a specific commit identified by the commit hash or name of a branch or tag
     // GET /projects/:id/repository/commits/:sha
     public GitlabCommit getCommit(Serializable projectId, String commitHash) throws IOException {
